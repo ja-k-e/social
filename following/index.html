@@ -56,12 +56,11 @@
       }
 
       ul li p a {
-        align-items: center;
         color: var(--accent);
-        display: flex;
-        font-size: 0.6em;
-        justify-content: center;
         text-decoration: none;
+      }
+      ul li p a.a {
+        font-size: 0.6em;
       }
       ul li p img {
         border-radius: 50%;
@@ -81,15 +80,15 @@
   </head>
   <body>
     <script>
-      const following = ["https://social.jake.fun"];
+      const following = ["social.jake.fun"];
 
       const profiles = {};
       const feeds = {};
 
       async function run(following) {
         following.forEach(async (url, i) => {
-          const feed = await fetch(`${url}/feed.json`);
-          const profile = await fetch(`${url}/profile.json`);
+          const feed = await fetch(`https://${url}/feed.json`);
+          const profile = await fetch(`https://${url}/profile.json`);
           const key = url;
           feeds[key] = await feed.json();
           profiles[key] = await profile.json();
@@ -111,16 +110,27 @@
         document.body.appendChild(ul);
         feed.forEach(({ key, text, time }) => {
           const li = document.createElement("li");
+          li.id = `z-${key.replace(/\./g, "-")}-${time}`;
           ul.appendChild(li);
           const { image, name } = profiles[key];
+          const at = profiles[key]["@"];
+          const reply = text.match(/@([^ ]+)#(\d+) /);
+          if (reply) {
+            const [_, domain, timestamp] = reply;
+            console.log(reply);
+            text = text.replace(
+              reply[0],
+              `<a href="#z-${domain.replace(/\./g, "-")}-${timestamp}">@</a> `
+            );
+          }
           li.innerHTML = `<p>
-      <span>${text}</span>
-      <!-- <img src="${image}" /> -->
-      <a href="${key}">${name}</a>
-      <small title="${new Date(time).toLocaleString()}">
-        ${time}
-      </small>
-    </p>`;
+        <span>${text}</span>
+        <!-- <img src="${image}" /> -->
+        <a class="a" href="${key}" title="${name}">${at}</a>
+        <small title="${new Date(time).toLocaleString()}">
+          ${time}
+        </small>
+      </p>`;
         });
       }
 
