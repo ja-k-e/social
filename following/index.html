@@ -104,7 +104,6 @@
       }
 
       function render(feed) {
-        document.body.innerText = "";
         const ul = document.createElement("ul");
         document.body.appendChild(ul);
         feed.forEach(({ key, text, time }) => {
