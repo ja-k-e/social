@@ -118,16 +118,29 @@
   </head>
   <body>
     <script>
-      const following = [
-        "social.jake.fun",
-        "social.daverupert.com",
-        "social.andy-bell.co.uk",
-      ];
-
       const profiles = {};
       const streams = {};
 
-      run(following);
+      run("social.jake.fun");
+
+      async function run(domain) {
+        try {
+          const following = await (
+            await fetch(`https://${domain}/following.json`)
+          ).json();
+          const promises = following.map(fetchDataForDomain);
+          await Promise.all(promises);
+          let stream = [];
+          for (let key in streams) {
+            const items = streams[key].map((item) => ({ key, ...item }));
+            stream = stream.concat(items);
+          }
+          stream.sort((a, b) => b.time - a.time);
+          render(stream);
+        } catch (e) {
+          render([]);
+        }
+      }
 
       function fetchDataForDomain(url) {
         return new Promise(async (resolve, reject) => {
@@ -148,18 +161,6 @@
             reject(e);
           }
         });
-      }
-
-      async function run(following) {
-        const promises = following.map(fetchDataForDomain);
-        await Promise.all(promises);
-        let stream = [];
-        for (let key in streams) {
-          const items = streams[key].map((item) => ({ key, ...item }));
-          stream = stream.concat(items);
-        }
-        stream.sort((a, b) => b.time - a.time);
-        render(stream);
       }
 
       function render(stream) {
