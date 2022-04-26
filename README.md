@@ -19,6 +19,8 @@ The second is your `stream.json` which is an array of your posts.
 Anyone that knows about your profile and stream can access it on the internet.
 If someone knows about many streams, they can collect them all together in a "feed" to be displayed however they like.
 
+You'll want to allow CORS (adding a `Access-Control-Allow-Origin: *` header) so that client side JavaScript can access your files. [\_headers](_headers) in this repo is an example of how to do this for Netlify. [GitHub pages should support this out of the box](https://twitter.com/invisiblecomma/status/575219895308324864)!
+
 ### What does the data look like?
 
 Your profile and stream can look _however_ you want them to look. As long as they are valid JSON, they can be read by anyone.
