@@ -85,6 +85,8 @@
       const profiles = {};
       const streams = {};
 
+      run(following);
+
       async function run(following) {
         let promises = following.length;
         following.forEach(async (url) => {
@@ -116,7 +118,8 @@
           ul.appendChild(li);
           const { image, name } = profiles[key];
           const at = profiles[key]["@"];
-          const reply = text.match(/@([^ ]+)#(\d+) /);
+          text = textWithLinks(text);
+          const reply = text.match(/^@([^ ]+)#(\d+) /);
           if (reply) {
             const [_, domain, timestamp] = reply;
             const profile = profiles[domain];
@@ -141,7 +144,13 @@
         });
       }
 
-      run(following);
+      function textWithLinks(text) {
+        return text.replace(
+          /(\b(https?:\/\/)([-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]))/i,
+          "<a href='$1'>$3</a>"
+        );
+        return text;
+      }
     </script>
   </body>
 </html>
