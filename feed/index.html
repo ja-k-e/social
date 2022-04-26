@@ -77,11 +77,13 @@
         font-size: 0.6em;
       }
       ul li p img {
-        border-radius: 50%;
-        height: 2em;
-        object-fit: cover;
-        object-position: cover;
-        width: 2em;
+        display: block;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        max-height: 6em;
+        max-width: 6em;
+        width: auto;
       }
 
       ul li p small {
@@ -126,19 +128,19 @@
       function render(stream) {
         const ul = document.createElement("ul");
         document.body.appendChild(ul);
-        stream.forEach(({ key, text, time }) => {
+        stream.forEach(({ key, text, image, time }) => {
           const li = document.createElement("li");
           li.id = `z-${key.replace(/\./g, "-")}-${time}`;
           ul.appendChild(li);
-          const { image, name } = profiles[key];
-          const at = profiles[key]["@"];
+          const profileA = profiles[key];
+          const at = profileA["@"];
           text = textWithLinks(text);
           const reply = text.match(/^@([^ ]+)#(\d+) /);
           if (reply) {
             const [_, domain, timestamp] = reply;
-            const profile = profiles[domain];
-            const name2 = (profile ? profile["@"] : "?") || "?";
-            const mention = domain === key ? "+" : `@${name2}`;
+            const profileB = profiles[domain];
+            const nameB = (profileB ? profileB["@"] : "?") || "?";
+            const mention = domain === key ? "+" : `@${nameB}`;
             text = text.replace(
               reply[0],
               `<a href="#z-${domain.replace(
@@ -147,14 +149,21 @@
               )}-${timestamp}">${mention}</a> `
             );
           }
+          let img = "";
+          if (image) {
+            const { url, alt } = image;
+            img = `<img class="img" src="${url}" alt="${alt || text}" />`;
+          }
           li.innerHTML = `<p>
-        <span>${text}</span>
-        <!-- <img src="${image}" /> -->
-        <a class="a" href="https://${key}" title="${name}">${at}</a>
-        <small title="${new Date(time).toLocaleString()}">
-          ${time}
-        </small>
-      </p>`;
+            ${img}
+            <span>${text}</span>
+            <a class="a" href="https://${key}" title="${
+            profileA.name
+          }">${at}</a>
+            <small title="${new Date(time).toLocaleString()}">
+              ${time}
+            </small>
+          </p>`;
         });
       }
 
