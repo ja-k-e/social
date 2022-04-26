@@ -11,7 +11,7 @@
         --accent: hotpink;
         --text: #000;
         --light: #999;
-        --font-size: 1.6em;
+        --font-size: 1.4em;
       }
       @media screen and (min-width: 600px) {
         :root {
@@ -64,6 +64,21 @@
         flex-direction: column;
         font-weight: bold;
       }
+      ul li p.xs > span {
+        font-size: 2em;
+      }
+      ul li p.sm > span {
+        font-size: 1.75em;
+      }
+      ul li p.md > span {
+        font-size: 1.5em;
+      }
+      ul li p.lg > span {
+        font-size: 1.25em;
+      }
+      ul li p.xl > span {
+        font-size: 1em;
+      }
 
       ul li p * + * {
         margin-top: 0.5em;
@@ -107,78 +122,122 @@
 
       run(following);
 
-      async function run(following) {
-        let promises = following.length;
-        following.forEach(async (url) => {
-          const stream = await fetch(`https://${url}/stream.json`);
-          const profile = await fetch(`https://${url}/profile.json`);
-          const key = url;
-          streams[key] = await stream.json();
-          profiles[key] = await profile.json();
-          profiles[key].image = `${url}/image.jpg`;
-          promises--;
-          if (promises <= 0) {
-            let stream = [];
-            for (let key in streams) {
-              const items = streams[key].map((item) => ({ key, ...item }));
-              stream = stream.concat(items);
+      function fetchDataForDomain(url) {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const stream = await fetch(`https://${url}/stream.json`);
+            const profile = await fetch(`https://${url}/profile.json`);
+            const key = url;
+            streams[key] = await stream.json();
+            profiles[key] = await profile.json();
+            const imageUrl = profiles[key].image;
+            if (!imageUrl) {
+              profiles[key].image = { url: `${url}/image.jpg` };
+            } else if (typeof imageUrl === "string") {
+              profiles[key].image = { url: imageUrl };
             }
-            stream.sort((a, b) => b.time - a.time);
-            render(stream);
+            resolve();
+          } catch (e) {
+            reject(e);
           }
         });
+      }
+
+      async function run(following) {
+        const promises = following.map(fetchDataForDomain);
+        await Promise.all(promises);
+        let stream = [];
+        for (let key in streams) {
+          const items = streams[key].map((item) => ({ key, ...item }));
+          stream = stream.concat(items);
+        }
+        stream.sort((a, b) => b.time - a.time);
+        render(stream);
       }
 
       function render(stream) {
         const ul = document.createElement("ul");
         document.body.appendChild(ul);
-        stream.forEach(({ key, text, image, time }) => {
+        stream.forEach((post) => {
           const li = document.createElement("li");
-          li.id = `z-${key.replace(/\./g, "-")}-${time}`;
+          li.id = idFromKeyAndTime(post.key, post.time);
           ul.appendChild(li);
-          const profileA = profiles[key];
+          const profileA = profiles[post.key];
           const at = profileA["@"];
+          let { text } = post;
           text = textWithLinks(text);
-          const reply = text.match(/^@([^ ]+)#(\d+) /);
-          if (reply) {
-            const [_, domain, timestamp] = reply;
-            const profileB = profiles[domain];
-            const nameB = (profileB ? profileB["@"] : "?") || "?";
-            const mention = domain === key ? "+" : `@${nameB}`;
-            text = text.replace(
-              reply[0],
-              `<a href="#z-${domain.replace(
-                /\./g,
-                "-"
-              )}-${timestamp}">${mention}</a> `
-            );
-          }
-          let img = "";
-          if (image) {
-            const { url, alt, height = 300, width = 300 } = image;
-            img = `<img class="img" src="${url}" alt="${
-              alt || text
-            }" height="${height}" width="${width}" />`;
-          }
-          li.innerHTML = `<p>
+          text = textWithReply(post.key, text);
+          const img = imgFromPost(post.image, text);
+          const url = urlFromPost(post.url);
+          li.innerHTML = `<p class="${classNameFromText(text)}">
             ${img}
             <span>${text}</span>
-            <a class="a" href="https://${key}" title="${
+            ${url}
+            <a class="a" href="https://${post.key}" title="${
             profileA.name
           }">${at}</a>
-            <small title="${new Date(time).toLocaleString()}">
-              ${time}
+            <small title="${new Date(post.time).toLocaleString()}">
+              ${post.time}
             </small>
           </p>`;
         });
       }
 
-      function textWithLinks(text) {
+      function classNameFromText(text) {
+        if (text.length < 25) {
+          return "xs";
+        }
+        if (text.length < 50) {
+          return "sm";
+        }
+        if (text.length < 100) {
+          return "md";
+        }
+        if (text.length < 200) {
+          return "lg";
+        }
+        return "xl";
+      }
+
+      function urlFromPost(url) {
+        if (!url) {
+          return "";
+        }
+        return url ? textWithLinks(url, "link") : "";
+      }
+
+      function imgFromPost(image, text) {
+        if (!image) {
+          return "";
+        }
+        const { url, alt = text, height = 300, width = 300 } = image;
+        return `<img class="img" src="${url}" alt="${alt}" height="${height}" width="${width}" />`;
+      }
+
+      function idFromKeyAndTime(key, time) {
+        return `z-${key.replace(/\./g, "-")}-${time}`;
+      }
+
+      function textWithReply(key, text) {
+        const reply = text.match(/^@([^ ]+)#(\d+) /);
+        if (reply) {
+          const [_, domain, timestamp] = reply;
+          const profileB = profiles[domain];
+          const nameB = (profileB ? profileB["@"] : "?") || "?";
+          const mention = domain === key ? "+" : `@${nameB}`;
+          text = text.replace(
+            reply[0],
+            `<a href="#${idFromKeyAndTime(domain, timestamp)}">${mention}</a> `
+          );
+        }
+        return text;
+      }
+
+      function textWithLinks(text, className = "") {
         return text.replace(
           /(\b(https?:\/\/)([-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]))/i,
-          "<a href='$1'>$3</a>"
+          `<a href="$1" class="${className}">$3</a>`
         );
-        return text;
       }
     </script>
   </body>
