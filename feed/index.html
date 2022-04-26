@@ -96,7 +96,11 @@
   </head>
   <body>
     <script>
-      const following = ["social.jake.fun", "social.daverupert.com", "social.andy-bell.co.uk"];
+      const following = [
+        "social.jake.fun",
+        "social.daverupert.com",
+        "social.andy-bell.co.uk",
+      ];
 
       const profiles = {};
       const streams = {};
@@ -151,8 +155,10 @@
           }
           let img = "";
           if (image) {
-            const { url, alt } = image;
-            img = `<img class="img" src="${url}" alt="${alt || text}" />`;
+            const { url, alt, height = 300, width = 300 } = image;
+            img = `<img class="img" src="${url}" alt="${
+              alt || text
+            }" height="${height}" width="${width}" />`;
           }
           li.innerHTML = `<p>
             ${img}

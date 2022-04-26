@@ -4,5 +4,11 @@
   "pronouns": "he/him",
   "location": "Chicago, USA",
   "bio": "code, music, art, accessibility, ux • ❤️ • dev advocate [figma](https://www.figma.com), content is mine",
-  "website": "https://www.jake.fun"
+  "website": "https://www.jake.fun",
+  "image": {
+    "url": "https://social.jake.fun/image.jpg",
+    "alt": "A photograph of my head looking up into a blue sky wearing a hat.",
+    "height": 600,
+    "width": 600
+  }
 }
