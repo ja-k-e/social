@@ -83,32 +83,32 @@
       const following = ["social.jake.fun"];
 
       const profiles = {};
-      const feeds = {};
+      const streams = {};
 
       async function run(following) {
         following.forEach(async (url, i) => {
-          const feed = await fetch(`https://${url}/feed.json`);
+          const stream = await fetch(`https://${url}/stream.json`);
           const profile = await fetch(`https://${url}/profile.json`);
           const key = url;
-          feeds[key] = await feed.json();
+          streams[key] = await stream.json();
           profiles[key] = await profile.json();
           profiles[key].image = `${url}/image.jpg`;
           if (i === following.length - 1) {
-            let feed = [];
-            for (let key in feeds) {
-              const items = feeds[key].map((item) => ({ key, ...item }));
-              feed = feed.concat(items);
+            let stream = [];
+            for (let key in streams) {
+              const items = streams[key].map((item) => ({ key, ...item }));
+              stream = stream.concat(items);
             }
-            feed.sort((a, b) => b.time - a.time);
-            render(feed);
+            stream.sort((a, b) => b.time - a.time);
+            render(stream);
           }
         });
       }
 
-      function render(feed) {
+      function render(stream) {
         const ul = document.createElement("ul");
         document.body.appendChild(ul);
-        feed.forEach(({ key, text, time }) => {
+        stream.forEach(({ key, text, time }) => {
           const li = document.createElement("li");
           li.id = `z-${key.replace(/\./g, "-")}-${time}`;
           ul.appendChild(li);
