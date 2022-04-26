@@ -4,7 +4,7 @@
     "time": 1650938164497
   },
   {
-    "text": "right now a status update / stream node has two properties, `text` and `time` but really, you could have anything. formalizing a universal pattern isn't necessary. for me, right now, i don't need much more than this. maybe an `image` property that is an object with `url` and `alt` attributes...",
+    "text": "right now a stream node has two properties, `text` and `time` but really, you could have anything. formalizing a universal pattern isn't necessary. right now, i don't need much more than this. maybe an `image` object with `url` and `alt` attributes...",
     "time": 1650937854061
   },
   {
