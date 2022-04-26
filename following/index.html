@@ -80,20 +80,22 @@
   </head>
   <body>
     <script>
-      const following = ["social.jake.fun"];
+      const following = ["social.jake.fun", "social.daverupert.com"];
 
       const profiles = {};
       const streams = {};
 
       async function run(following) {
-        following.forEach(async (url, i) => {
+        let promises = following.length;
+        following.forEach(async (url) => {
           const stream = await fetch(`https://${url}/stream.json`);
           const profile = await fetch(`https://${url}/profile.json`);
           const key = url;
           streams[key] = await stream.json();
           profiles[key] = await profile.json();
           profiles[key].image = `${url}/image.jpg`;
-          if (i === following.length - 1) {
+          promises--;
+          if (promises <= 0) {
             let stream = [];
             for (let key in streams) {
               const items = streams[key].map((item) => ({ key, ...item }));
@@ -117,10 +119,14 @@
           const reply = text.match(/@([^ ]+)#(\d+) /);
           if (reply) {
             const [_, domain, timestamp] = reply;
-            console.log(reply);
+            const profile = profiles[domain];
+            const name2 = (profile ? profile["@"] : "?") || "?";
             text = text.replace(
               reply[0],
-              `<a href="#z-${domain.replace(/\./g, "-")}-${timestamp}">@</a> `
+              `<a href="#z-${domain.replace(
+                /\./g,
+                "-"
+              )}-${timestamp}">@${name2}</a> `
             );
           }
           li.innerHTML = `<p>
