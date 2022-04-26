@@ -4,7 +4,7 @@
     "time": 1650938164497
   },
   {
-    "text": "right now a status update / stream node has two properties, \"text\" and \"time\" but really, it could be anything. i don't see any reason to try and make it a universal thing. for me, right now, i don't need much more than this. maybe an \"image\" property that is an object with `url` and `alt` attributes...",
+    "text": "right now a status update / stream node has two properties, `text` and `time` but really, it could be anything. i don't see any reason to try and make it a universal thing. for me, right now, i don't need much more than this. maybe an `image` property that is an object with `url` and `alt` attributes...",
     "time": 1650937854061
   },
   {
