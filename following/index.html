@@ -121,12 +121,13 @@
             const [_, domain, timestamp] = reply;
             const profile = profiles[domain];
             const name2 = (profile ? profile["@"] : "?") || "?";
+            const mention = domain === key ? "+" : `@${name2}`;
             text = text.replace(
               reply[0],
               `<a href="#z-${domain.replace(
                 /\./g,
                 "-"
-              )}-${timestamp}">@${name2}</a> `
+              )}-${timestamp}">${mention}</a> `
             );
           }
           li.innerHTML = `<p>
