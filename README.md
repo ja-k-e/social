@@ -78,6 +78,22 @@ Currently, I am proposing something like this for a basic stream that supports t
 
 These can really look however you want them to though. No one is saying you have to do it this way. I am making a reader that reads ^ this format, but you can make a reader that reads whatever you and your friends want to post.
 
+### following.json
+
+Currently using `following.json` as an array of domains that you are following. This array can be used by a reader to assemble your feed, and can be used by others to explore the network.
+
+The domains at `following.json` are listed without protocol. SSL is assumed.
+
+```json
+[
+  "social.jake.fun",
+  "social.daverupert.com",
+  "social.andy-bell.co.uk",
+  "anotherexample.com",
+  "website.biz"
+]
+```
+
 ### Threads / Replies
 
 This is very much WIP, but here's a proposal for threads and replies.
