@@ -1,5 +1,13 @@
 [
   {
+    "text": "it me. lol.",
+    "image": {
+      "url": "https://social.jake.fun/image.jpg",
+      "alt": "A photograph of my head looking up into a blue sky weaering a hat."
+    },
+    "time": 1650938694864
+  },
+  {
     "text": "this is as transient as you want it to be. i can edit, reorder, delete. nice that git keeps the history...",
     "time": 1650938164497
   },
