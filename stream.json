@@ -1,5 +1,9 @@
 [
   {
+    "text": "added the concept of following.json so that the network can be explored and readers can be a bit more dynamic.",
+    "time": 1650993257731
+  },
+  {
     "text": "i made a post template",
     "url": "https://codepen.io/jakealbaugh/full/dyJBjRL",
     "time": 1650989472677
