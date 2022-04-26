@@ -121,7 +121,10 @@
       const profiles = {};
       const streams = {};
 
-      run("social.jake.fun");
+      const params = new URLSearchParams(location.search);
+      const source = params.get("s") || "social.jake.fun";
+
+      run(source);
 
       async function run(domain) {
         try {
