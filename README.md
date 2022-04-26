@@ -8,6 +8,8 @@ Someone should build a reader...
 
 ...check [social.jake.fun/feed](https://social.jake.fun/feed) for a basic example.
 
+[This pen](https://codepen.io/jakealbaugh/full/dyJBjRL) provides post templates.
+
 ## Instructions
 
 Participation is publishing two JSON files to the internet.
@@ -46,7 +48,7 @@ Currently, I am proposing the following for a minimal `profile.json`
 
 ### stream.json
 
-For `stream.json` the only important value is a `time` value. This way posts can be ordered when streams are combined into a feed. For that, use a millisecond epoch. You can get that by running `Date.now()` in a JavaScript console, or using a tool like [this pen](https://codepen.io/jakealbaugh/full/dyJBjRL/81da056bf8cd9eaf0d58ca37f0bc78c7). The number should be 13 digits long and in the JSON as numbers (not strings).
+For `stream.json` the only important value is a `time` value. This way posts can be ordered when streams are combined into a feed. For that, use a millisecond epoch. You can get that by running `Date.now()` in a JavaScript console, or using a tool like [this pen](https://codepen.io/jakealbaugh/full/dyJBjRL) which provides templates. The number should be 13 digits long and in the JSON as numbers (not strings).
 
 Currently, I am proposing something like this for a basic stream that supports text, image, and link posts:
 
