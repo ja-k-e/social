@@ -107,6 +107,12 @@
       ul li p a.a {
         font-size: 0.6em;
       }
+      ul li p a.t {
+        color: var(--light);
+        font-size: 0.4em;
+        font-style: italic;
+        font-weight: normal;
+      }
       ul li p img {
         display: block;
         height: auto;
@@ -115,13 +121,6 @@
         max-height: 6em;
         max-width: 6em;
         width: auto;
-      }
-
-      ul li p small {
-        color: var(--light);
-        font-size: 0.4em;
-        font-style: italic;
-        font-weight: normal;
       }
     </style>
   </head>
@@ -189,16 +188,16 @@
           text = textWithReply(post.key, text);
           const img = imgFromPost(post.image, text);
           const url = urlFromPost(post.url);
+          const replyUrl = `https://social.jake.fun/new/?t=@${post.key}%23${post.time}%20your%20reply%20here`;
+          const timeString = new Date(post.time).toLocaleString();
+          const authorLink = `<a class="a" href="https://${post.key}" title="${profileA.name}">${at}</a>`;
+          const timeLink = `<a class="t" title="${timeString}" href="${replyUrl}">${post.time}</a>`;
           li.innerHTML = `<p class="${classNameFromText(text)}">
             ${img}
             <span>${text}</span>
             ${url}
-            <a class="a" href="https://${post.key}" title="${
-            profileA.name
-          }">${at}</a>
-            <small title="${new Date(post.time).toLocaleString()}">
-              ${post.time}
-            </small>
+            ${authorLink}
+          ${timeLink}
           </p>`;
         });
       }
