@@ -124,6 +124,7 @@
   <body>
     <ul id="feed"></ul>
     <script>
+      const last = { key: "", time: 0, count: 0 };
       go();
 
       function go() {
@@ -156,6 +157,17 @@
         }
 
         function render(stream) {
+          console.log(last);
+          if (
+            stream.length === last.count &&
+            stream[0].key === last.key &&
+            stream[0].time === last.time
+          ) {
+            return;
+          }
+          last.count = stream.length;
+          last.key = stream[0].key;
+          last.time = stream[0].time;
           const ul = document.getElementById("feed");
           ul.innerHTML = "";
           stream.forEach((post) => {
