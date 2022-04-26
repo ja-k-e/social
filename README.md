@@ -48,7 +48,7 @@ Currently, I am proposing the following for a minimal `profile.json`
 
 For `stream.json` the only important value is a `time` value. This way posts can be ordered when streams are combined into a feed. For that, use a millisecond epoch. You can get that by running `Date.now()` in a JavaScript console, or using a tool like [currentmillis.com](https://currentmillis.com/). The number should be 13 digits long and in the JSON as numbers (not strings).
 
-Currently, I am proposing something like this for a basic stream that supports text and image posts:
+Currently, I am proposing something like this for a basic stream that supports text, image, and link posts:
 
 ```json
 [
@@ -61,6 +61,11 @@ Currently, I am proposing something like this for a basic stream that supports t
       "width": 600
     },
     "time": 1650938694864
+  },
+  {
+    "text": "a text post with a link at the end",
+    "url": "https://link.com/something",
+    "time": 1650938170000
   },
   {
     "text": "a pure text post",
