@@ -1,5 +1,7 @@
 # Social Network
 
+[buddy.pizza](https://buddy.pizza) ([repo](https://github.com/jakealbaugh/buddy-pizza))
+
 [social.jake.fun](https://social.jake.fun)
 
 Publish three files, and share yourself with the world.
