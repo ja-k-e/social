@@ -157,17 +157,17 @@
         }
 
         function render(stream) {
-          console.log(last);
+          const item = stream[0] || {};
           if (
             stream.length === last.count &&
-            stream[0].key === last.key &&
-            stream[0].time === last.time
+            item.key === last.key &&
+            item.time === last.time
           ) {
             return;
           }
           last.count = stream.length;
-          last.key = stream[0].key;
-          last.time = stream[0].time;
+          last.key = item.key;
+          last.time = item.time;
           const ul = document.getElementById("feed");
           ul.innerHTML = "";
           stream.forEach((post) => {
