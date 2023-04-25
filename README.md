@@ -4,9 +4,9 @@ Publish three files, and share yourself with the world.
 
 [social.jake.fun](https://social.jake.fun) is this specific social domain.
 
-- Visit [buddy.pizza](https://buddy.pizza) for the latest reader ([repo](https://github.com/jakealbaugh/buddy-pizza)).
-- Visit `buddy.pizza?s=your-domain.com` if you want to see your personal feed.
-- Visit [buddy.pizza/post](https://buddy.pizza/post) for a post template.
+- Visit [buddy.pizza.jake.fun](https://buddy.pizza.jake.fun) for the latest reader ([repo](https://github.com/jakealbaugh/buddy-pizza)).
+- Visit `buddy.pizza.jake.fun?s=your-domain.com` if you want to see your personal feed.
+- Visit [buddy.pizza.jake.fun/post](https://buddy.pizza.jake.fun/post) for a post template.
 
 ## Instructions
 
@@ -52,7 +52,7 @@ Currently, I am proposing the following for a minimal `profile.json`
 
 ### stream.json
 
-For `stream.json` the only important value is a `time` value. This way posts can be ordered when streams are combined into a feed. For that, use a millisecond epoch. You can get that by running `Date.now()` in a JavaScript console, or using a tool like [buddy.pizza/post](https://buddy.pizza/post/) which provides templates. The number should be 13 digits long and in the JSON as numbers (not strings).
+For `stream.json` the only important value is a `time` value. This way posts can be ordered when streams are combined into a feed. For that, use a millisecond epoch. You can get that by running `Date.now()` in a JavaScript console, or using a tool like [buddy.pizza.jake.fun/post](https://buddy.pizza.jake.fun/post/) which provides templates. The number should be 13 digits long and in the JSON as numbers (not strings).
 
 Currently, I am proposing something like this for a basic stream that supports text, image, and link posts:
 
@@ -91,7 +91,7 @@ The domains at `following.json` are listed without protocol. SSL is assumed.
 ```json
 [
   "social.jake.fun",
-  "social.buddy.pizza",
+  "social.buddy.pizza.jake.fun",
   "profile.rog.ie",
   "social.daverupert.com",
   "social.andy-bell.co.uk"
@@ -151,4 +151,4 @@ The format is `@ + domain + # + time`. This way a reader can find the post an li
 
 ## Readers
 
-A reader will only read the streams it is subscribed to following the formats it expects. That means if you want to read your own streams, you'll have to make one until someone makes a tool that makes this easier. I created an unstyled example on [CodePen](https://codepen.io/jakealbaugh/pen/abEgGQd/f7c9f5c6d2c5ac7d0ef29b433b6a2e0c) if you want to do it that way, or checkout the [buddy.pizza source code](https://github.com/jakealbaugh/buddy-pizza/tree/main/website).
+A reader will only read the streams it is subscribed to following the formats it expects. That means if you want to read your own streams, you'll have to make one until someone makes a tool that makes this easier. I created an unstyled example on [CodePen](https://codepen.io/jakealbaugh/pen/abEgGQd/f7c9f5c6d2c5ac7d0ef29b433b6a2e0c) if you want to do it that way, or checkout the [buddy.pizza source code](https://github.com/ja-k-e/buddy-pizza/tree/main/website).
